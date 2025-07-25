@@ -11,7 +11,7 @@ reports_bp = Blueprint('reports', __name__)
 @jwt_required()
 def get_reports():
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         reports = Report.query.filter_by(user_id=user_id).order_by(Report.created_at.desc()).all()
         
         return jsonify({
@@ -25,7 +25,7 @@ def get_reports():
 @jwt_required()
 def generate_report():
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         data = request.get_json()
         
         # Validate required fields
@@ -134,7 +134,7 @@ def generate_report():
 @jwt_required()
 def get_dashboard_data():
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         
         # Get current month data
         today = date.today()
@@ -184,7 +184,7 @@ def get_dashboard_data():
 @jwt_required()
 def delete_report(report_id):
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         report = Report.query.filter_by(id=report_id, user_id=user_id).first()
         
         if not report:

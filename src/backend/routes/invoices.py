@@ -10,7 +10,7 @@ invoices_bp = Blueprint('invoices', __name__)
 @jwt_required()
 def get_invoices():
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         invoices = Invoice.query.filter_by(user_id=user_id).order_by(Invoice.created_at.desc()).all()
         
         return jsonify({
@@ -24,7 +24,7 @@ def get_invoices():
 @jwt_required()
 def get_invoice(invoice_id):
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         invoice = Invoice.query.filter_by(id=invoice_id, user_id=user_id).first()
         
         if not invoice:
@@ -39,7 +39,7 @@ def get_invoice(invoice_id):
 @jwt_required()
 def create_invoice():
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         data = request.get_json()
         
         # Validate required fields
@@ -99,7 +99,7 @@ def create_invoice():
 @jwt_required()
 def update_invoice(invoice_id):
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         invoice = Invoice.query.filter_by(id=invoice_id, user_id=user_id).first()
         
         if not invoice:
@@ -158,7 +158,7 @@ def update_invoice(invoice_id):
 @jwt_required()
 def delete_invoice(invoice_id):
     try:
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         invoice = Invoice.query.filter_by(id=invoice_id, user_id=user_id).first()
         
         if not invoice:

@@ -16,7 +16,7 @@ def test_jwt():
     with app.app_context():
         # Create a test token
         test_user_id = 1
-        token = create_access_token(identity=test_user_id)
+        token = create_access_token(identity=str(test_user_id))
         print(f"Generated token: {token}")
         
         try:

@@ -46,16 +46,16 @@ export const authAPI = {
 
 // Invoices API
 export const invoicesAPI = {
-  getAll: () => api.get('/invoices'),
+  getAll: () => api.get('/invoices/'),
   getById: (id) => api.get(`/invoices/${id}`),
-  create: (invoiceData) => api.post('/invoices', invoiceData),
+  create: (invoiceData) => api.post('/invoices/', invoiceData),
   update: (id, invoiceData) => api.put(`/invoices/${id}`, invoiceData),
   delete: (id) => api.delete(`/invoices/${id}`),
 };
 
 // Reports API
 export const reportsAPI = {
-  getAll: () => api.get('/reports'),
+  getAll: () => api.get('/reports/'),
   generate: (reportData) => api.post('/reports/generate', reportData),
   getDashboard: () => api.get('/reports/dashboard'),
   delete: (id) => api.delete(`/reports/${id}`),

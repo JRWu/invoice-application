@@ -1,4 +1,5 @@
 node_modules/*
 src/frontend/node_modules/*
 src/backend/__pycache__/*
+src/backend/tests/__pycache__/*
 *.pyc

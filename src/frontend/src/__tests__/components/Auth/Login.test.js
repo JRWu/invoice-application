@@ -3,12 +3,12 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Login from './Login';
-import { useAuth } from '../../contexts/AuthContext';
+import Login from '../../../components/Auth/Login';
+import { useAuth } from '../../../contexts/AuthContext';
 
 jest.mock('axios');
 
-jest.mock('../../utils/api', () => ({
+jest.mock('../../../utils/api', () => ({
   authAPI: {
     login: jest.fn(),
     register: jest.fn(),
@@ -23,7 +23,7 @@ jest.mock('react-toastify', () => ({
   },
 }));
 
-jest.mock('../../contexts/AuthContext', () => ({
+jest.mock('../../../contexts/AuthContext', () => ({
   useAuth: jest.fn(),
 }));
 

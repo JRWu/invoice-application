@@ -3,6 +3,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime, date
 from models import db, Invoice, InvoiceItem, User
 import uuid
+from validation import validate_invoice_data
+from error_handlers import create_error_response
 
 invoices_bp = Blueprint('invoices', __name__)
 
@@ -42,11 +44,10 @@ def create_invoice():
         user_id = int(get_jwt_identity())
         data = request.get_json()
         
-        # Validate required fields
-        required_fields = ['customer_name', 'due_date', 'items']
-        for field in required_fields:
-            if not data.get(field):
-                return jsonify({'error': f'{field} is required'}), 400
+        # Validate invoice data
+        validation_error = validate_invoice_data(data)
+        if validation_error:
+            return create_error_response(validation_error, 400)
         
         # Generate unique invoice number
         invoice_number = f"INV-{datetime.now().strftime('%Y%m%d')}-{str(uuid.uuid4())[:8].upper()}"
@@ -69,8 +70,6 @@ def create_invoice():
         
         # Add invoice items
         for item_data in data['items']:
-            if not item_data.get('description') or not item_data.get('quantity') or not item_data.get('unit_price'):
-                return jsonify({'error': 'Each item must have description, quantity, and unit_price'}), 400
             
             item = InvoiceItem(
                 invoice_id=invoice.id,

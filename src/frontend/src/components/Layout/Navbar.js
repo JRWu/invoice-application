@@ -37,7 +37,7 @@ const Navbar = () => {
             style={{
               fontSize: '1.5rem',
               fontWeight: 'bold',
-              color: '#3b82f6',
+              color: '#021c42ff',
               textDecoration: 'none'
             }}
           >

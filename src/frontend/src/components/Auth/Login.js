@@ -63,7 +63,7 @@ const Login = () => {
             Welcome Back
           </h1>
           <p style={{ color: '#64748b' }}>
-            Sign in to your invoice account
+            Sign in to Invoice Application
           </p>
         </div>
 

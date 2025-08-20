@@ -28,18 +28,18 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 2. Install Python dependencies:
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 3. Initialize the database:
 ```bash
 cd src/backend
-python init_db.py
+python3 init_db.py
 ```
 
 4. Run the Flask server:
 ```bash
-python app.py
+python3 app.py
 ```
 
 ### Frontend Setup

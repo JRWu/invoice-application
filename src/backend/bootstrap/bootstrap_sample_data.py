@@ -26,6 +26,7 @@ This script uses only the Python standard library (urllib), so no extra deps nee
 import json
 import os
 import sys
+from typing import Union, Optional
 from urllib import request, error
 
 DEFAULT_BASE_URL = "http://localhost:5001/api"
@@ -34,7 +35,7 @@ EMAIL = "testuser@email.com"
 PASSWORD = "topsecretpassword"
 COMPANY_NAME = "Test Company"
 
-def _http_request(method: str, url: str, payload: dict | None = None, headers: dict | None = None):
+def _http_request(method: str, url: str, payload: Optional[dict] = None, headers: Optional[dict] = None):
     data = None
     if payload is not None:
         data = json.dumps(payload).encode("utf-8")
@@ -63,7 +64,7 @@ def _http_request(method: str, url: str, payload: dict | None = None, headers: d
         return None, {"error": f"URLError: {e.reason}"}
 
 
-def register_user(base_url: str) -> tuple[int | None, dict]:
+def register_user(base_url: str) -> tuple[Optional[int], dict]:
     url = f"{base_url}/auth/register"
     payload = {
         "username": USERNAME,
@@ -74,16 +75,16 @@ def register_user(base_url: str) -> tuple[int | None, dict]:
     return _http_request("POST", url, payload)
 
 
-def login_user(base_url: str) -> tuple[int | None, dict]:
+def login_user(base_url: str) -> tuple[Optional[int], dict]:
     url = f"{base_url}/auth/login"
     payload = {
         "username": USERNAME,
-        "password": PASSWORD,
+        "password": PASSWORD,   
     }
     return _http_request("POST", url, payload)
 
 
-def get_profile(base_url: str, token: str) -> tuple[int | None, dict]:
+def get_profile(base_url: str, token: str) -> tuple[Optional[int], dict]:
     url = f"{base_url}/auth/profile"
     headers = {"Authorization": f"Bearer {token}"}
     return _http_request("GET", url, headers=headers)

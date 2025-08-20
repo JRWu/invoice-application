@@ -41,7 +41,7 @@ const Navbar = () => {
               textDecoration: 'none'
             }}
           >
-            InvoiceApp
+            Invoice App
           </Link>
           
           <div style={{ display: 'flex', gap: '1rem' }}>

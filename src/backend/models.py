@@ -17,7 +17,7 @@ class User(db.Model):
     invoices = db.relationship('Invoice', backref='user', lazy=True, cascade='all, delete-orphan')
     
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

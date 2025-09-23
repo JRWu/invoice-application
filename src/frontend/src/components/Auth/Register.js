@@ -85,12 +85,13 @@ const Register = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="username">
               <User size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Username
             </label>
             <input
               type="text"
+              id="username"
               name="username"
               value={formData.username}
               onChange={handleChange}
@@ -101,12 +102,13 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="email">
               <Mail size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Email
             </label>
             <input
               type="email"
+              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -117,12 +119,13 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="company_name">
               <Building size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Company Name (Optional)
             </label>
             <input
               type="text"
+              id="company_name"
               name="company_name"
               value={formData.company_name}
               onChange={handleChange}
@@ -132,12 +135,13 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="password">
               <Lock size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Password
             </label>
             <input
               type="password"
+              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -149,12 +153,13 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="confirmPassword">
               <Lock size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Confirm Password
             </label>
             <input
               type="password"
+              id="confirmPassword"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}

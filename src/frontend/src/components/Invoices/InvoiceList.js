@@ -9,7 +9,8 @@ import {
   Trash2, 
   Calendar,
   Search,
-  Filter
+  Filter,
+  Download
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -66,6 +67,47 @@ const InvoiceList = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const handleExportCSV = () => {
+    try {
+      if (filteredInvoices.length === 0) {
+        toast.warning('No invoices to export');
+        return;
+      }
+
+      const headers = ['Invoice Number', 'Customer Name', 'Customer Email', 'Issue Date', 'Due Date', 'Amount', 'Status'];
+      const csvRows = [headers.join(',')];
+
+      filteredInvoices.forEach(invoice => {
+        const row = [
+          invoice.invoice_number,
+          `"${invoice.customer_name}"`,
+          invoice.customer_email || '',
+          format(new Date(invoice.issue_date), 'yyyy-MM-dd'),
+          format(new Date(invoice.due_date), 'yyyy-MM-dd'),
+          invoice.total_amount.toFixed(2),
+          invoice.status
+        ];
+        csvRows.push(row.join(','));
+      });
+
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', `invoices_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success(`Exported ${filteredInvoices.length} invoice(s)`);
+    } catch (error) {
+      toast.error('Failed to export invoices');
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading">
@@ -85,10 +127,16 @@ const InvoiceList = () => {
         <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>
           Invoices
         </h1>
-        <Link to="/invoices/new" className="btn btn-primary">
-          <Plus size={16} />
-          New Invoice
-        </Link>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button onClick={handleExportCSV} className="btn btn-outline">
+            <Download size={16} />
+            Export
+          </button>
+          <Link to="/invoices/new" className="btn btn-primary">
+            <Plus size={16} />
+            New Invoice
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}

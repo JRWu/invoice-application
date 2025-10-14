@@ -15,6 +15,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask
 from flask_jwt_extended import JWTManager, create_access_token, decode_token, get_jwt_identity
 from config import Config
+from app import create_app
 
 
 class TestJWTAuthentication(unittest.TestCase):
@@ -22,9 +23,8 @@ class TestJWTAuthentication(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures before each test method."""
-        self.app = Flask(__name__)
-        self.app.config.from_object(Config)
-        self.jwt = JWTManager(self.app)
+        self.app = create_app()
+        self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
     
@@ -104,6 +104,47 @@ class TestJWTAuthentication(unittest.TestCase):
         
         with self.assertRaises(Exception):
             decode_token(invalid_token)
+    
+    def test_protected_endpoints_without_token(self):
+        """Test that protected endpoints reject requests without authentication token."""
+        protected_endpoints = [
+            ('/api/auth/profile', 'GET'),
+            ('/api/invoices/', 'GET'),
+            ('/api/reports/dashboard', 'GET'),
+        ]
+        
+        for endpoint, method in protected_endpoints:
+            with self.subTest(endpoint=endpoint, method=method):
+                if method == 'GET':
+                    response = self.client.get(endpoint)
+                
+                self.assertEqual(response.status_code, 401)
+                
+                data = response.get_json()
+                self.assertIn('error', data)
+                self.assertEqual(data['error'], 'Authorization token is required')
+    
+    def test_protected_endpoints_with_invalid_token(self):
+        """Test that protected endpoints reject requests with invalid authentication token."""
+        invalid_token = "invalid.jwt.token.here"
+        headers = {'Authorization': f'Bearer {invalid_token}'}
+        
+        protected_endpoints = [
+            ('/api/auth/profile', 'GET'),
+            ('/api/invoices/', 'GET'),
+            ('/api/reports/dashboard', 'GET'),
+        ]
+        
+        for endpoint, method in protected_endpoints:
+            with self.subTest(endpoint=endpoint, method=method):
+                if method == 'GET':
+                    response = self.client.get(endpoint, headers=headers)
+                
+                self.assertEqual(response.status_code, 401)
+                
+                data = response.get_json()
+                self.assertIn('error', data)
+                self.assertIn('Invalid token', data['error'])
 
 
 def run_jwt_tests():

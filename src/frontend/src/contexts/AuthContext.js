@@ -22,8 +22,15 @@ export const AuthProvider = ({ children }) => {
       const savedUser = localStorage.getItem('user');
 
       if (savedToken && savedUser) {
-        setToken(savedToken);
-        setUser(JSON.parse(savedUser));
+        try {
+          setToken(savedToken);
+          setUser(JSON.parse(savedUser));
+        } catch (error) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setToken(null);
+          setUser(null);
+        }
       }
 
       setLoading(false);

@@ -69,12 +69,13 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="username">
               <User size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Username
             </label>
             <input
               type="text"
+              id="username"
               name="username"
               value={formData.username}
               onChange={handleChange}
@@ -85,12 +86,13 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">
+            <label className="form-label" htmlFor="password">
               <Lock size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
               Password
             </label>
             <input
               type="password"
+              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}

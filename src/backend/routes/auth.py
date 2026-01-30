@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models import db, User
+from validation import validate_user_data, validate_required_fields
+from error_handlers import create_error_response
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -9,11 +11,10 @@ def register():
     try:
         data = request.get_json()
         
-        # Validate required fields
-        required_fields = ['username', 'email', 'password']
-        for field in required_fields:
-            if not data.get(field):
-                return jsonify({'error': f'{field} is required'}), 400
+        # Validate user data
+        validation_error = validate_user_data(data)
+        if validation_error:
+            return create_error_response(validation_error, 400)
         
         # Check if user already exists
         if User.query.filter_by(username=data['username']).first():
@@ -51,8 +52,9 @@ def login():
         data = request.get_json()
         
         # Validate required fields
-        if not data.get('username') or not data.get('password'):
-            return jsonify({'error': 'Username and password are required'}), 400
+        validation_error = validate_required_fields(data, ['username', 'password'])
+        if validation_error:
+            return create_error_response(validation_error, 400)
         
         # Find user
         user = User.query.filter_by(username=data['username']).first()

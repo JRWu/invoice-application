@@ -94,7 +94,7 @@ const Dashboard = () => {
               padding: '0.75rem',
               borderRadius: '0.5rem'
             }}>
-              <FileText size={24} color="#3b82f6" />
+              <FileText size={24} color="#021c42ff" />
             </div>
           </div>
         </div>
